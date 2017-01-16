@@ -9,4 +9,7 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class UserBean {
+    public void createUser(String user) {
+        System.out.print("User created:" + user);
+    }
 }

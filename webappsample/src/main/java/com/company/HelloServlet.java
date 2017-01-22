@@ -16,8 +16,12 @@ import java.io.IOException;
 public class HelloServlet extends HttpServlet {
 
 
-    @EJB
+    @EJB(lookup = "java:app/ejbsample-1.0-SNAPSHOT/UserBean")
     private UserBean userBean;
+    @EJB(lookup = "java:module/TestEjb")
+    private TestEjb testEjb;
+    @EJB(lookup = "java:module/TestEjbXml")
+    private TestEjbXml testEjbXml;
 
     @EJB
     private CartRemote cartRemote;
@@ -43,6 +47,8 @@ public class HelloServlet extends HttpServlet {
         httpServletResponse.getWriter().print("<h1>" + "USER CREATED"+ "</h1>");
         String cart = cartRemote.createCart("Cart 123");
         httpServletResponse.getWriter().print("<h1>" +cart+ "</h1>");
+        httpServletResponse.getWriter().print("<h1>" +testEjb.test("Test same module")+ "</h1>");
+        httpServletResponse.getWriter().print("<h1>" +testEjbXml.test("Test same module XML")+ "</h1>");
 
 /*
         Context context = null;

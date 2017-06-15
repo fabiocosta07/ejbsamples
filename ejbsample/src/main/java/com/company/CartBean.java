@@ -8,8 +8,17 @@ import javax.ejb.Stateless;
  */
 public class CartBean implements CartLocal , CartRemote {
 
+
+
+    private UserBean userBean;
     @Override
     public String createCart(String cart) {
+        userBean.createUser("sdfasdfa");
         return cart;
     }
+
+    public void setUserBean(UserBean userBean) {
+        this.userBean = userBean;
+    }
+
 }

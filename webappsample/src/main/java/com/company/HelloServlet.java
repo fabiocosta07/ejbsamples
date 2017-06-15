@@ -2,6 +2,7 @@ package com.company;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletException;
@@ -24,7 +25,15 @@ public class HelloServlet extends HttpServlet {
     private TestEjbXml testEjbXml;
 
     @EJB
+    private TestLocal testLocal;
+
+    @EJB
     private CartRemote cartRemote;
+
+    @Resource(mappedName = "jms/QueueConnectionFactory")
+    private QueueConnectionFactory queueConnectionFactory;
+    @Resource(mappedName = "jms/OrderQueue")
+    private Queue queue;
 
 /*
     public ProductBean getProductBean() {
@@ -44,11 +53,30 @@ public class HelloServlet extends HttpServlet {
         // Set response content type
         httpServletResponse.setContentType("text/html");
         userBean.createUser("Fabio");
+        userBean.createTimer();
+        userBean.testTransaction();
         httpServletResponse.getWriter().print("<h1>" + "USER CREATED"+ "</h1>");
         String cart = cartRemote.createCart("Cart 123");
         httpServletResponse.getWriter().print("<h1>" +cart+ "</h1>");
         httpServletResponse.getWriter().print("<h1>" +testEjb.test("Test same module")+ "</h1>");
         httpServletResponse.getWriter().print("<h1>" +testEjbXml.test("Test same module XML")+ "</h1>");
+        httpServletResponse.getWriter().print("<h1>" +testLocal.test("Test Resource XML")+ "</h1>");
+
+
+        String message = "new Order";
+        try {
+            Connection connection = queueConnectionFactory.createQueueConnection();
+            Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+            MessageProducer messageProducer = (MessageProducer)session.createProducer(queue);
+            TextMessage textMessage = session.createTextMessage();
+            textMessage.setText(message);
+            messageProducer.send(textMessage);
+            httpServletResponse.getWriter().print("<h1>" + "MESSAGE SENT"+ "</h1>");
+
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+
 
 /*
         Context context = null;

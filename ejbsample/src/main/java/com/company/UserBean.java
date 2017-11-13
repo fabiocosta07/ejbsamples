@@ -16,6 +16,8 @@ public class UserBean {
     private TimerService timerService;
     @EJB
     private TestBean2 testBean2;
+    @Resource
+    EJBContext ejbContext;
 
     public void createUser(String user) {
         System.out.print("User created:" + user);
@@ -37,11 +39,29 @@ public class UserBean {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void testTransaction(){
         try {
+            ejbContext.getUserTransaction().begin();
             testBean2.testTransaction();
+            ejbContext.getUserTransaction().commit();
         } catch (AppException e) {
             e.printStackTrace();
+        } catch (NotSupportedException e) {
+            e.printStackTrace();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        } catch (HeuristicMixedException e) {
+            e.printStackTrace();
+        } catch (HeuristicRollbackException e) {
+            e.printStackTrace();
+        } catch (RollbackException e) {
+            e.printStackTrace();
         }
-        System.out.print("CCCCCCOOOOOOOMMMMMMIIIIITED");
+/*
+        if (ejbContext.getRollbackOnly()){
+            System.out.print("Transaction Rollbacked");
+        } else {
+            System.out.print("Transaction COMMITED");
+        }
+*/
 
     }
 }

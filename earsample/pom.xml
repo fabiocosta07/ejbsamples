@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <glassfish.home>/home/efabapo/glassfish</glassfish.home>
+    <glassfish.home>/home/efabapo/application-servers/glassfish3/</glassfish.home>
   </properties>
 
   <dependencies>
@@ -66,15 +66,14 @@
         <configuration>
           <glassfishDirectory>${glassfish.home}</glassfishDirectory>
           <user>admin</user>
-          <adminPassword>123</adminPassword>
-          <!-- <passFile>path/to/asadmin/passfile</passFile> -->
+          <passwordFile>/home/efabapo/application-servers/glassfish3/glassfish/domains/domain2/master-password</passwordFile>
           <autoCreate>true</autoCreate>
           <debug>true</debug>
           <echo>false</echo>
           <terse>true</terse>
           <skip>true</skip>
           <domain>
-            <name>domain1</name>
+            <name>domain2</name>
             <adminPort>4848</adminPort>
             <httpPort>8080</httpPort>
             <httpsPort>8443</httpsPort>

@@ -30,6 +30,9 @@ public class HelloServlet extends HttpServlet {
     @EJB
     private CartRemote cartRemote;
 
+    @EJB
+    private TestSessionSync testSessionSync;
+
     @Resource(mappedName = "jms/QueueConnectionFactory")
     private QueueConnectionFactory queueConnectionFactory;
     @Resource(mappedName = "jms/OrderQueue")
@@ -77,6 +80,10 @@ public class HelloServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+// TestSessionSyncronization
+        testSessionSync.test();
+
+        httpServletResponse.getWriter().print("<h1>" + "TestSessionSyncronization finished"+ "</h1>");
 
 /*
         Context context = null;

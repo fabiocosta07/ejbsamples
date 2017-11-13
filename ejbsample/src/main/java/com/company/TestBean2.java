@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.annotation.Resource;
 import javax.ejb.*;
 
 /**a
@@ -8,9 +9,12 @@ import javax.ejb.*;
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class TestBean2 {
+    @Resource
+    EJBContext ejbContext;
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void testTransaction() throws AppException {
-        throw new AppException();
-        //System.out.print("TTTTT");
+        //throw new AppException();
+        ejbContext.setRollbackOnly();
     }
 }
